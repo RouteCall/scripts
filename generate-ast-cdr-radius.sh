@@ -23,7 +23,7 @@
 
 # global variables
 BASEDIR="$(dirname "$0")"
-LOG="${BASEDIR}/radius_seed.log"
+LOG="${BASEDIR}/generate-ast-cdr-radius.log"
 
 # bins
 OPENSSL='/usr/bin/openssl'
@@ -67,15 +67,15 @@ _generate_cdr_ast() {
   asterisk_dst=("${asterisk_dst[@]}" "$(_rand_num 1 9)$(_rand_num 1 9)9$(_rand_num 4 9)$(_rand_num 100 999)$(_rand_num 1000 9999)")
   asterisk_dst="${asterisk_dst[$(( ${RANDOM} % ${#asterisk_dst[@]} ))]}"
   # dcontext
-  asterisk_dst_ctx="(${dcontext_collection})"
+  asterisk_dst_ctx=(${dcontext_collection})
   asterisk_dst_ctx="${asterisk_dst_ctx[$(( RANDOM % ${#asterisk_dst_ctx[@]} ))]}"
   # clid
   asterisk_clid="${asterisk_src} <${asterisk_src}>"
   # channel
-  asterisk_chan="(${channel_collection})"
+  asterisk_chan=(${channel_collection})
   asterisk_chan="${asterisk_chan[$(( RANDOM % ${#asterisk_chan[@]} ))]}-$(_rand_hex 8)"
   # dstchannel
-  asterisk_dst_chan="(${dstchannel_collection})"
+  asterisk_dst_chan=(${dstchannel_collection})
   asterisk_dst_chan="${asterisk_dst_chan[$(( RANDOM % ${#asterisk_dst_chan[@]} ))]}-$(_rand_hex 8)"
   # now
   second_now=$(date '+%S' | bc)
@@ -87,8 +87,8 @@ _generate_cdr_ast() {
   # answer, billsec, disposition
   # disposition
   [[ ${#disposition_collection[@]} -gt 0 ]] && 
-    asterisk_disposition="${disposition_collection[$(( RANDOM % ${#disposition_collection[@]} ))]}" ||
-    asterisk_disposition="${disposition_collection[0]}"
+    asterisk_disposition=${disposition_collection[$(( RANDOM % ${#disposition_collection[@]} ))]} ||
+    asterisk_disposition=${disposition_collection[0]}
 
   # billsec, duration, answer, end
   case "${asterisk_disposition}" in
