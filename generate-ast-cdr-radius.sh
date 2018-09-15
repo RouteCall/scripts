@@ -24,10 +24,16 @@
 # global variables
 BASEDIR="$(dirname "$0")"
 LOG="${BASEDIR}/generate-ast-cdr-radius.log"
+NULL="/dev/null"
 
 # bins
-OPENSSL='/usr/bin/openssl'
+OPENSSL="$(/usr/bin/which openssl)"
+OPENSSL="${OPENSSL:-/usr/bin/openssl}"
 RADCLIENT="$(/usr/bin/which radclient)"
+RADCLIENT="${RADCLIENT:-/usr/bin/radclient}"
+# check of bins
+${OPENSSL} version > ${NULL} || exit 1
+${RADCLIENT} -v > ${NULL}    || exit 1
 
 # default collections
 dcontext_collection='outbound-calls outbound-calls outbound-calls outbound-calls outbound-calls inbound-calls inbound-calls inbound-calls from-exten'
