@@ -102,7 +102,7 @@ _generate_cdr_ast() {
       # random duration
       asterisk_duration="$(((RANDOM%600)))"
       # random billsec (duration > billsec)
-      asterisk_bill_sec="$((asterisk_duration-(RANDOM%30)))"
+      asterisk_bill_sec="$(_rand_num 0 ${asterisk_duration})"
       asterisk_answer="$(printf "%(%Y-%m-%d %H:%M:%S)T" $(( $(printf "%(%s)T") + ${asterisk_bill_sec}))) -0300"
       asterisk_end="$(printf "%(%Y-%m-%d %H:%M:%S)T" $(( $(printf "%(%s)T") + ${asterisk_duration}))) -0300"
     ;;
